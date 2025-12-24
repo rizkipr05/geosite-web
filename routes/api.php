@@ -2,9 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AdminAuthController;
-use App\Http\Controllers\Api\CategoryController;
-use App\Http\Controllers\Api\GeositeController;
-use App\Http\Controllers\Api\MediaController;
+use App\Http\Controllers\Api\Admin\CategoryController;
+use App\Http\Controllers\Api\Admin\GeositeController;
+use App\Http\Controllers\Api\Admin\MediaController;
 
     // Route::get('/test', function () {
     //     return response()->json([
@@ -33,15 +33,6 @@ Route::middleware(['admin_token'])->prefix('admin')->group(function () {
 
     // publish/unpublish
     Route::patch('geosites/{geosite}/status', [GeositeController::class, 'toggleStatus']);
-});
-
-Route::prefix('admin')->group(function () {
-  Route::view('/login', 'admin.auth.login')->name('admin.login');
-
-  Route::view('/', 'admin.dashboard')->name('admin.dashboard');
-  Route::view('/categories', 'admin.categories')->name('admin.categories');
-  Route::view('/geosites', 'admin.geosites')->name('admin.geosites');
-  Route::view('/media', 'admin.media')->name('admin.media');
 });
 
 

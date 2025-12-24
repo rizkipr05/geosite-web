@@ -16,43 +16,68 @@ class AdminAuthController extends Controller
     {
         $data = $request->validate([
             'email' => ['required','email'],
-            'password' => ['required'],
+            'password' => ['required','string'],
         ]);
 
+        /** @var User|null $user */
         $user = User::where('email', $data['email'])->first();
 
         if (!$user || !Hash::check($data['password'], $user->password) || $user->role !== 'admin') {
-            return response()->json(['message' => 'Unauthorized'], 401);
+            return response()->json(['message' => 'Email/password salah atau bukan admin'], 401);
         }
 
+        // jti disimpan ke DB untuk kontrol revoke
         $jti = (string) Str::uuid();
-        $token = JWTAuth::customClaims(['jti' => $jti])->fromUser($user);
+
+        // bikin token JWT + custom claim jti
+        $token = JWTAuth::customClaims(['jti' => $jti, 'role' => 'admin'])->fromUser($user);
+
+        // ambil TTL dari config (menit)
+        $ttlMinutes = config('jwt.ttl'); // default 60
+        $expiresAt = now()->addMinutes($ttlMinutes);
 
         AdminToken::create([
             'user_id' => $user->id,
             'jti' => $jti,
             'token_hash' => hash('sha256', $token),
-            'expires_at' => now()->addMinutes(config('jwt.ttl')),
+            'expires_at' => $expiresAt,
         ]);
 
+        // simpan JWT di HttpOnly cookie
         return response()->json(['message' => 'OK'])
-            ->cookie('admin_token', $token, config('jwt.ttl'), '/', null, false, true);
+            ->cookie(
+                cookie('admin_token', $token, $ttlMinutes, '/', null, false, true, false, 'Lax')
+            );
     }
 
     public function me()
     {
-        return response()->json(auth()->user());
+        $user = auth()->user();
+        return response()->json([
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'role' => $user->role,
+        ]);
     }
 
     public function logout(Request $request)
     {
+        // token dari cookie
         $token = $request->cookie('admin_token');
-        if (!$token) return response()->json(['message' => 'No token'], 400);
+        if (!$token) {
+            return response()->json(['message' => 'No token'], 400);
+        }
 
-        $payload = JWTAuth::setToken($token)->getPayload();
-        $jti = $payload->get('jti');
-
-        AdminToken::where('jti', $jti)->update(['revoked_at' => now()]);
+        // decode untuk ambil jti
+        try {
+            $payload = JWTAuth::setToken($token)->getPayload();
+            $jti = $payload->get('jti');
+            
+            AdminToken::where('jti', $jti)->update(['revoked_at' => now()]);
+        } catch (\Exception $e) {
+            // ignore if token invalid
+        }
 
         return response()->json(['message' => 'Logged out'])
             ->withoutCookie('admin_token');
