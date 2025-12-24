@@ -1,59 +1,128 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Geo Explore - Probolinggo Geopark Information System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Geo Explore adalah platform berbasis web yang menyediakan informasi komprehensif mengenai destinasi geowisata (Geopark) di Kabupaten Probolinggo. Aplikasi ini dirancang untuk memudahkan wisatawan dalam menemukan, mempelajari, dan menavigasi lokasi-lokasi geosite yang tersebar di wilayah tersebut.
 
-## About Laravel
+Platform ini tidak hanya menyediakan informasi statis, tetapi juga dilengkapi dengan fitur **Admin Panel** yang kuat untuk mengelola data, termasuk integrasi otomatis dengan **OpenStreetMap (OSM)** dan **Wikidata** untuk memperkaya konten (gambar dan deskripsi) secara real-time.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🚀 Fitur Utama
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 🌍 Guest (Pengunjung)
+- **Interactive Map**: Peta interaktif berbasis LeafletJS yang menampilkan sebaran geosite dengan marker kustom.
+- **Advanced Search & Filter**: Pencarian destinasi berdasarkan nama, kategori (Pantai, Air Terjun, Perbukitan, dll), dan wilayah.
+- **Detail Geosite**: Halaman detail yang menyajikan deskripsi mendalam, galeri foto, video, informasi tiket, jam operasional, dan navigasi langsung ke Google Maps.
+- **Modern UI/UX**: Desain antarmuka premium dengan nuansa gelap (glassmorphism), responsif untuk mobile dan desktop.
+- **Optimized Performance**: Penggunaan ikon SVG inline untuk kecepatan interaksi yang lebih baik.
 
-## Learning Laravel
+### 🛡️ Admin (Pengelola)
+- **Dashboard Analitik**: Ringkasan statistik jumlah geosite, kategori, dan aktivitas.
+- **Manajemen Geosite (CRUD)**: Tambah, edit, dan hapus data geosite dengan mudah.
+- **Import Otomatis dari OSM**: Fitur unggulan untuk mengimpor data wisata secara massal dari OpenStreetMap.
+  - **Auto-Fetch Images**: Mengambil gambar berkualitas tinggi secara otomatis dari **Wikidata**.
+  - **Auto-Address Parsing**: Melengkapi alamat dan deskripsi secara otomatis.
+  - **Duplicate Handling**: Memperbarui data yang sudah ada tanpa duplikasi.
+- **Manajemen Kategori**: Pengelompokan destinasi wisata.
+- **Manajemen Media**: Upload dan kelola galeri foto/video untuk setiap geosite.
+- **Secure Authentication**: Sistem login aman untuk admin.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 🛠️ Tech Stack
 
-## Laravel Sponsors
+Aplikasi ini dibangun menggunakan teknologi web modern untuk memastikan performa, keamanan, dan kemudahan pengembangan.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Backend
+- **Framework**: [Laravel](https://laravel.com) (PHP Framework)
+  - Arsitektur MVC yang kokoh.
+  - Eloquent ORM untuk manajemen database.
+  - RESTful API untuk komunikasi data internal.
+- **Database**: MySQL
 
-### Premium Partners
+### Frontend
+- **Templating**: Blade Template Engine
+- **Styling**: [Tailwind CSS](https://tailwindcss.com) (Utility-first CSS framework via CDN/Build)
+- **Icons**: Heroicons (Inline SVG)
+- **Map Library**: [Leaflet.js](https://leafletjs.com) (Open-source JavaScript library for mobile-friendly interactive maps)
+- **Data Source**: OpenStreetMap (via Overpass API) & Wikidata API
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### External Services & APIs
+- **Overpass API**: Digunakan untuk mengambil data geospasial (titik koordinat, nama, metadata) dari OpenStreetMap.
+- **Wikidata API**: Digunakan untuk mengambil gambar dan metadata tambahan yang terhubung dengan entitas OSM.
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 📂 Struktur Folder Utama
 
-## Code of Conduct
+Berikut adalah struktur direktori penting dalam proyek ini:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```
+geo-web/
+├── app/
+│   ├── Http/Controllers/       # Logika aplikasi (Admin & Guest)
+│   │   ├── Api/Admin/ImportController.php  # Logika Import OSM & Wikidata
+│   ├── Models/                 # Model database (Geosite, Media, Category)
+│   ├── Services/               # Service khusus (OverpassService)
+├── resources/
+│   ├── views/
+│   │   ├── admin/              # Tampilan halaman admin (Dashboard, Login, dll)
+│   │   ├── guest/              # Tampilan halaman pengunjung (Home, Explore, About)
+│   │   └── layouts/            # Template utama blade
+├── routes/
+│   ├── web.php                 # Rute halaman web
+│   ├── api.php                 # Rute API (Login, Import)
+├── database/                   # Migrasi dan Seeder
+```
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## ⚡ Instalasi & Jalankan Lokal
 
-## License
+Ikuti langkah-langkah berikut untuk menjalankan proyek di komputer lokal Anda:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Prasyarat
+- PHP >= 8.1
+- Composer
+- MySQL
+
+### Langkah-langkah
+
+1. **Clone Repository**
+   ```bash
+   git clone https://github.com/rizkipr05/geosite-web.git
+   cd geo-web
+   ```
+
+2. **Install Dependencies**
+   ```bash
+   composer install
+   ```
+
+3. **Konfigurasi Environment**
+   Salin file `.env.example` menjadi `.env` dan sesuaikan dengan konfigurasi database Anda.
+   ```bash
+   cp .env.example .env
+   ```
+   Atur DB_DATABASE, DB_USERNAME, dan DB_PASSWORD di file `.env`.
+
+4. **Generate Key & Migrasi Database**
+   ```bash
+   php artisan key:generate
+   php artisan migrate --seed
+   ```
+   *Note: Gunakan seed untuk membuat akun admin default.*
+
+5. **Jalankan Server**
+   ```bash
+   php artisan serve
+   ```
+
+6. **Akses Aplikasi**
+   - Halaman Tamu: `http://127.0.0.1:8000`
+   - Login Admin: `http://127.0.0.1:8000/admin/login`
+
+---
+
+## 📝 Lisensi
+
+Proyek ini adalah perangkat lunak open-source di bawah lisensi [MIT](https://opensource.org/licenses/MIT).
