@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\AdminAuthController;
 use App\Http\Controllers\Api\Admin\CategoryController;
 use App\Http\Controllers\Api\Admin\GeositeController;
 use App\Http\Controllers\Api\Admin\MediaController;
+use App\Http\Controllers\Api\Admin\ImportController;
 
     // Route::get('/test', function () {
     //     return response()->json([
@@ -39,4 +40,9 @@ Route::middleware(['admin_token'])->prefix('admin')->group(function () {
 Route::middleware('admin_token')->group(function () {
   Route::get('/admin/me', [\App\Http\Controllers\Api\AdminAuthController::class, 'me']);
   Route::post('/admin/logout', [\App\Http\Controllers\Api\AdminAuthController::class, 'logout']);
+});
+
+
+Route::middleware(['admin_token'])->prefix('admin')->group(function () {
+    Route::post('/import/probolinggo/tourism', [ImportController::class, 'tourismProbolinggo']);
 });

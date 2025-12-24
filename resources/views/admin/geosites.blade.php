@@ -9,14 +9,23 @@
   <div class="flex gap-2">
     <input id="q" placeholder="Cari nama/alamat/region..."
            class="w-full md:w-80 rounded-lg border border-slate-200 px-3 py-2 text-sm bg-white">
-    <button onclick="load(1)" class="px-3 py-2 rounded-lg border border-slate-200 text-sm hover:bg-slate-50 bg-white">
+    <button type="button" onclick="load(1)"
+            class="px-3 py-2 rounded-lg border border-slate-200 text-sm hover:bg-slate-50 bg-white">
       Cari
     </button>
   </div>
-  <button onclick="openModal()"
-          class="px-3 py-2 rounded-lg bg-slate-900 text-white text-sm hover:bg-slate-800">
-    + Tambah Geosite
-  </button>
+
+  <div class="flex gap-2">
+    <button type="button" onclick="openImportModal()"
+            class="px-3 py-2 rounded-lg border border-slate-200 bg-white text-sm hover:bg-slate-50">
+      Import OSM Probolinggo
+    </button>
+
+    <button type="button" onclick="openModal()"
+            class="px-3 py-2 rounded-lg bg-slate-900 text-white text-sm hover:bg-slate-800">
+      + Tambah Geosite
+    </button>
+  </div>
 </div>
 
 <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden">
@@ -38,18 +47,24 @@
   <div class="p-3 border-t border-slate-200 flex items-center justify-between">
     <div class="text-sm text-slate-600" id="pageInfo">-</div>
     <div class="flex gap-2">
-      <button id="prevBtn" class="px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50">Prev</button>
-      <button id="nextBtn" class="px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50">Next</button>
+      <button id="prevBtn" type="button"
+              class="px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50">
+        Prev
+      </button>
+      <button id="nextBtn" type="button"
+              class="px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50">
+        Next
+      </button>
     </div>
   </div>
 </div>
 
-{{-- Modal Geosite --}}
+{{-- ===================== MODAL: GEOSITE ===================== --}}
 <div id="modal" class="fixed inset-0 bg-black/30 hidden items-center justify-center p-4">
   <div class="bg-white w-full max-w-2xl rounded-2xl border border-slate-200 shadow-sm">
     <div class="p-4 border-b border-slate-200 flex items-center justify-between">
       <div class="font-semibold" id="modalTitle">Tambah Geosite</div>
-      <button class="p-2 rounded hover:bg-slate-100" onclick="closeModal()">✕</button>
+      <button type="button" class="p-2 rounded hover:bg-slate-100" onclick="closeModal()">✕</button>
     </div>
 
     <form id="form" class="p-4 grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -101,10 +116,12 @@
       </div>
 
       <div class="md:col-span-2 flex justify-end gap-2 pt-2">
-        <button type="button" onclick="closeModal()" class="px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">
+        <button type="button" onclick="closeModal()"
+                class="px-3 py-2 rounded-lg border border-slate-200 hover:bg-slate-50">
           Batal
         </button>
-        <button class="px-3 py-2 rounded-lg bg-slate-900 text-white hover:bg-slate-800">
+        <button type="submit"
+                class="px-3 py-2 rounded-lg bg-slate-900 text-white hover:bg-slate-800">
           Simpan
         </button>
       </div>
@@ -113,6 +130,47 @@
     </form>
   </div>
 </div>
+
+{{-- ===================== MODAL: IMPORT OSM ===================== --}}
+<div id="importModal" class="fixed inset-0 bg-black/30 hidden items-center justify-center p-4">
+  <div class="bg-white w-full max-w-lg rounded-2xl border border-slate-200 shadow-sm">
+    <div class="p-4 border-b border-slate-200 flex items-center justify-between">
+      <div class="font-semibold">Import OSM (Kab. Probolinggo)</div>
+      <button type="button" class="p-2 rounded hover:bg-slate-100" onclick="closeImportModal()">✕</button>
+    </div>
+
+    <form id="importForm" class="p-4 space-y-3">
+      <div>
+        <label class="text-sm text-slate-600">Kategori untuk hasil import</label>
+        <select id="import_category_id" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 bg-white"></select>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2">
+        <div>
+          <label class="text-sm text-slate-600">Status</label>
+          <select id="import_status" class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 bg-white">
+            <option value="draft">Draft (recommended)</option>
+            <option value="published">Published</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-sm text-slate-600">Limit</label>
+          <input id="import_limit" type="number" min="1" max="500" value="200"
+                 class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2">
+        </div>
+      </div>
+
+      <button id="importBtn" type="submit"
+              class="w-full px-3 py-2 rounded-lg bg-slate-900 text-white text-sm hover:bg-slate-800">
+        Jalankan Import
+      </button>
+
+      <p id="importInfo" class="text-sm text-slate-600"></p>
+      <p id="importErr" class="text-sm text-red-600 hidden"></p>
+    </form>
+  </div>
+</div>
+
 @endsection
 
 @push('scripts')
@@ -169,7 +227,8 @@ async function load(p=1){
   if(!data) return;
 
   lastPage = data.last_page;
-  document.getElementById('pageInfo').textContent = `Hal ${data.current_page} / ${data.last_page} • Total ${data.total}`;
+  document.getElementById('pageInfo').textContent =
+    `Hal ${data.current_page} / ${data.last_page} • Total ${data.total}`;
 
   document.getElementById('prevBtn').disabled = data.current_page <= 1;
   document.getElementById('nextBtn').disabled = data.current_page >= data.last_page;
@@ -182,11 +241,14 @@ async function load(p=1){
       <td class="p-3">${badge(g.status)}</td>
       <td class="p-3">
         <div class="flex justify-end gap-2">
-          <button class="px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50"
+          <button type="button"
+                  class="px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50"
                   onclick='edit(${g.id})'>Edit</button>
-          <button class="px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50"
+          <button type="button"
+                  class="px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50"
                   onclick='toggleStatus(${g.id})'>Toggle</button>
-          <button class="px-3 py-1.5 rounded-lg bg-red-600 text-white hover:bg-red-500"
+          <button type="button"
+                  class="px-3 py-1.5 rounded-lg bg-red-600 text-white hover:bg-red-500"
                   onclick='del(${g.id})'>Hapus</button>
         </div>
       </td>
@@ -250,6 +312,63 @@ document.getElementById('form').addEventListener('submit', async (e)=>{
   }catch(e){
     err.textContent = 'Gagal menyimpan. Cek input (kategori, koordinat, deskripsi).';
     err.classList.remove('hidden');
+  }
+});
+
+// ===== IMPORT OSM =====
+function openImportModal(){
+  document.getElementById('importModal').classList.remove('hidden');
+  document.getElementById('importModal').classList.add('flex');
+
+  const sel = document.getElementById('import_category_id');
+  sel.innerHTML = categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+  document.getElementById('importInfo').textContent = '';
+  document.getElementById('importErr').classList.add('hidden');
+}
+
+function closeImportModal(){
+  document.getElementById('importModal').classList.add('hidden');
+  document.getElementById('importModal').classList.remove('flex');
+}
+
+document.getElementById('importForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+
+  const info = document.getElementById('importInfo');
+  const err = document.getElementById('importErr');
+  const btn = document.getElementById('importBtn');
+
+  err.classList.add('hidden');
+  info.textContent = 'Mengimport...';
+  btn.disabled = true;
+  btn.classList.add('opacity-60','cursor-not-allowed');
+
+  try{
+    const category_id = Number(document.getElementById('import_category_id').value);
+    const status = document.getElementById('import_status').value;
+    const limit = Number(document.getElementById('import_limit').value);
+
+    const res = await api('/api/admin/import/probolinggo/tourism', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({category_id, status, limit})
+    });
+
+    info.textContent = `Selesai ✅ created: ${res.created}, skipped: ${res.skipped}, fetched: ${res.total_fetched}`;
+    await load(1);
+  }catch(e){
+    // tampilkan error asli (kalau backend mengirim JSON message/error)
+    let msg = e?.message || 'unknown';
+    try {
+      const parsed = JSON.parse(msg);
+      msg = parsed.error || parsed.message || msg;
+    } catch(_) {}
+    err.textContent = 'Gagal import: ' + msg;
+    err.classList.remove('hidden');
+    info.textContent = '';
+  }finally{
+    btn.disabled = false;
+    btn.classList.remove('opacity-60','cursor-not-allowed');
   }
 });
 
