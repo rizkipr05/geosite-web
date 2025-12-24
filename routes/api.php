@@ -23,7 +23,7 @@ Route::middleware('admin_token')->group(function () {
   Route::post('/admin/logout', [AdminAuthController::class, 'logout']);
 });
 
-Route::middleware(['admin_token'])->prefix('admin')->group(function () {
+Route::middleware(['admin_token'])->prefix('admin')->name('api.admin.')->group(function () {
     Route::apiResource('categories', CategoryController::class);
     Route::apiResource('geosites', GeositeController::class);
 

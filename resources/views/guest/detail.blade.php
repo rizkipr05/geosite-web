@@ -8,7 +8,11 @@
     <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden">
       <div class="h-64 bg-slate-100">
         @if($cover && $cover->type === 'photo')
-          <img src="{{ asset('storage/'.$cover->path) }}" class="w-full h-full object-cover">
+          @if(Str::startsWith($cover->path, ['http','https']))
+            <img src="{{ $cover->path }}" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='https://picsum.photos/seed/{{ $geosite->id }}/800/400?blur=2';this.parentElement.innerHTML='<div class=\'w-full h-full flex items-center justify-center text-slate-400\'>Image not available</div>'">
+          @else
+            <img src="{{ asset('storage/'.$cover->path) }}" class="w-full h-full object-cover">
+          @endif
         @else
           <div class="w-full h-full flex items-center justify-center text-slate-400 text-sm">No Cover</div>
         @endif
@@ -58,8 +62,8 @@
         @if($geosite->open_hours)
           <div class="mt-1"><span class="text-slate-500">Jam:</span> {{ $geosite->open_hours }}</div>
         @endif
-        @if(!is_null($geosite->ticket_price))
-          <div class="mt-1"><span class="text-slate-500">Tiket:</span> Rp {{ number_format($geosite->ticket_price,0,',','.') }}</div>
+        @if($geosite->ticket_price)
+          <div class="mt-1"><span class="text-slate-500">Tiket:</span> {{ $geosite->ticket_price }}</div>
         @endif
       </div>
 

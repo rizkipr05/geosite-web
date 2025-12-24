@@ -53,22 +53,42 @@ class ImportController extends Controller
                 $tourism = $tags['tourism'] ?? 'tourism';
                 $desc = "Destinasi wisata (OSM: {$tourism}).\n\nSumber: OpenStreetMap.";
 
-                Geosite::create([
+                // Mapping Harga
+                $fee = $tags['fee'] ?? ($tags['charge'] ?? ($tags['entrance'] ?? null));
+
+                $geo = Geosite::create([
                     'category_id' => $categoryId,
                     'name' => $name,
                     'slug' => $slug,
                     'description' => $desc,
                     'latitude' => (float)$lat,
                     'longitude' => (float)$lng,
-                    'address' => $tags['addr:full'] ?? null,
+                    'address' => $tags['addr:full'] ?? $tags['addr:street'] ?? null,
                     'region' => 'Kabupaten Probolinggo',
                     'open_hours' => $tags['opening_hours'] ?? null,
-                    'ticket_price' => null,
+                    'ticket_price' => $fee, // Sekarang string, jadi aman
                     'status' => $status,
                     'osm_type' => $osmType,
                     'osm_id' => (int)$osmId,
                     'osm_source' => 'overpass',
                 ]);
+
+                // Simpan Gambar jika ada
+                $imageUrl = $tags['image'] ?? ($tags['image:url'] ?? ($tags['url'] ?? ($tags['website'] ?? null)));
+                if ($imageUrl && filter_var($imageUrl, FILTER_VALIDATE_URL)) {
+                    // Cek ekstensi gambar valid atau website (kadang website bukan gambar, tapi kita coba saja sebagai 'link' atau placeholder)
+                    // Jika wikimedia commons, url-nya mungkin bukan direct image.
+                    // Untuk simplisitas, kita simpan sebagai Media type 'photo' dengan path URL.
+                    // Frontend harus menghandle jika path dimulai dengan http.
+
+                    \App\Models\Media::create([
+                        'geosite_id' => $geo->id,
+                        'type' => 'photo',
+                        'path' => $imageUrl,
+                        'caption' => 'OSM Image',
+                        'is_cover' => true,
+                    ]);
+                }
 
                 $created++;
             }
