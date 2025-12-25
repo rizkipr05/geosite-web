@@ -38,17 +38,32 @@ class ImportController extends Controller
                 $name = $tags['name'] ?? null;
                 if (!$osmType || !$osmId || !$name) { continue; }
 
+                // Filter unwanted types
+                $tourismType = $tags['tourism'] ?? '';
+                if (preg_match('/(hotel|guest_house|hostel|motel|apartment|camp_site)/i', $tourismType)) {
+                    continue;
+                }
+                if (($tags['amenity'] ?? '') === 'cafe' || ($tags['cuisine'] ?? '') === 'coffee_shop') {
+                    continue;
+                }
+
                 $lat = $el['lat'] ?? ($el['center']['lat'] ?? null);
                 $lng = $el['lon'] ?? ($el['center']['lon'] ?? null);
                 if (!$lat || !$lng) { continue; }
 
                 // 2. Enhanced Description
                 $descRaw = $tags['description:id'] ?? ($tags['description'] ?? null);
-                $tourism = $tags['tourism'] ?? 'tourism';
                 
+                // Determine Category Label
+                $catLabel = 'Wisata';
+                if (!empty($tags['tourism']) && $tags['tourism'] !== 'yes') $catLabel = ucfirst(str_replace('_', ' ', $tags['tourism']));
+                elseif (!empty($tags['natural'])) $catLabel = 'Alam (' . ucfirst(str_replace('_', ' ', $tags['natural'])) . ')';
+                elseif (!empty($tags['waterway'])) $catLabel = 'Alam (' . ucfirst(str_replace('_', ' ', $tags['waterway'])) . ')';
+                elseif (!empty($tags['leisure'])) $catLabel = ucfirst(str_replace('_', ' ', $tags['leisure']));
+
                 $desc = $descRaw 
                     ? "{$descRaw}\n\n(Sumber: OpenStreetMap)" 
-                    : "Destinasi wisata kategori {$tourism} di Probolinggo.\n\n(Sumber: OpenStreetMap)";
+                    : "Destinasi {$catLabel} di Probolinggo.\n\n(Sumber: OpenStreetMap)";
 
                 // 3. Enhanced Address construction
                 $address = $tags['addr:full'] ?? null;

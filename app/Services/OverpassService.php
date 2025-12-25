@@ -20,8 +20,18 @@ class OverpassService
 [out:json][timeout:60];
 area($areaId)->.searchArea;
 (
-  nwr["tourism"](area.searchArea);
+  // Prioritas Wisata Alam & Atraksi
+  nwr["tourism"="attraction"](area.searchArea);
+  nwr["tourism"="viewpoint"](area.searchArea);
+  nwr["natural"~"waterfall|beach|peak|volcano|cave_entrance|spring|water"](area.searchArea);
+  nwr["waterway"="waterfall"](area.searchArea);
+  nwr["leisure"="nature_reserve"](area.searchArea);
+  nwr["leisure"="park"](area.searchArea);
 );
+// Filter Out: Akomodasi & Tempat Makan
+(._; - nwr["tourism"~"hotel|guest_house|hostel|motel|camp_site|apartment|resort|chalet"](area.searchArea););
+(._; - nwr["amenity"~"cafe|restaurant|fast_food|bar|pub|food_court"](area.searchArea););
+(._; - nwr["shop"](area.searchArea););
 out center tags;
 QL;
 
