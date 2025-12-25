@@ -41,12 +41,6 @@
         {{ $q }}
       </span>
     @endif
-    @if(!empty($categoryId))
-      @php $catName = optional($categories->firstWhere('id', (int)$categoryId))->name; @endphp
-      <span class="px-3 py-1.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100 text-xs font-semibold">
-        {{ $catName ?: 'Kategori dipilih' }}
-      </span>
-    @endif
     @if(!empty($region))
       <span class="px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100 text-xs font-semibold inline-flex items-center gap-1">
         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
@@ -54,7 +48,7 @@
       </span>
     @endif
 
-    @if(empty($q) && empty($categoryId) && empty($region))
+    @if(empty($q) && empty($region))
       <span class="text-sm text-slate-500">Menampilkan semua geosite.</span>
     @endif
   </div>
@@ -100,7 +94,7 @@
         <div class="flex items-center justify-between mb-4">
           <div>
             <div class="font-extrabold text-slate-900">Filter</div>
-            <div class="text-sm text-slate-500">Kategori & wilayah</div>
+            <div class="text-sm text-slate-500">Wilayah</div>
           </div>
 
           <a href="{{ route('explore.index') }}"
@@ -113,15 +107,8 @@
           {{-- kalau kamu punya search di navbar yang kirim q, ini menjaga nilai --}}
           <input type="hidden" name="q" value="{{ $q }}">
 
-          <div>
-            <label class="text-sm font-semibold text-slate-700">Kategori</label>
-            <select name="category_id"
-                    class="mt-2 w-full rounded-2xl border border-slate-200 px-4 py-3 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-200">
-              <option value="">Semua</option>
-              @foreach($categories as $c)
-                <option value="{{ $c->id }}" @selected((string)$categoryId === (string)$c->id)>{{ $c->name }}</option>
-              @endforeach
-            </select>
+          <div class="hidden">
+             
           </div>
 
           <div>
@@ -186,9 +173,6 @@
                       <div class="font-extrabold text-slate-900 truncate">{{ $g->name }}</div>
 
                       <div class="mt-1 flex flex-wrap gap-1">
-                        <span class="text-[11px] px-2 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-100 font-semibold">
-                          {{ $g->category?->name ?? '-' }}
-                        </span>
                         <span class="text-[11px] px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100 font-semibold">
                           {{ $g->region ?? 'Probolinggo' }}
                         </span>
@@ -264,7 +248,7 @@
       <div style="min-width:220px">
         <div style="font-weight:800; margin-bottom:2px">${escapeHtml(p.name)}</div>
         <div style="font-size:12px; color:#64748b; margin-bottom:8px">
-          ${(p.category ?? '')}${p.region ? ' • '+escapeHtml(p.region) : ''}
+          ${p.region ? escapeHtml(p.region) : ''}
         </div>
         ${p.address ? `<div style="font-size:12px; color:#334155; margin-bottom:10px">${escapeHtml(p.address)}</div>` : ''}
         <div style="display:flex; gap:8px">

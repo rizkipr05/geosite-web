@@ -18,7 +18,7 @@
         @endif
       </div>
       <div class="p-4">
-        <div class="text-xs text-slate-500">{{ $geosite->category?->name ?? '-' }} • {{ $geosite->region ?? 'Probolinggo' }}</div>
+        <div class="text-xs text-slate-500">{{ $geosite->region ?? 'Probolinggo' }}</div>
         <h1 class="text-2xl font-semibold mt-1">{{ $geosite->name }}</h1>
         <p class="text-sm text-slate-600 mt-2 whitespace-pre-line">{{ $geosite->description }}</p>
       </div>

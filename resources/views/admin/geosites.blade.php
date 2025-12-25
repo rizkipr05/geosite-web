@@ -34,7 +34,6 @@
       <thead class="bg-slate-50 text-slate-600">
         <tr>
           <th class="text-left p-3">Nama</th>
-          <th class="text-left p-3">Kategori</th>
           <th class="text-left p-3">Region</th>
           <th class="text-left p-3">Status</th>
           <th class="text-right p-3">Aksi</th>
@@ -75,7 +74,7 @@
         <input id="name" required class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2">
       </div>
 
-      <div>
+      <div class="hidden">
         <label class="text-sm text-slate-600">Kategori</label>
         <select id="category_id" required class="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 bg-white"></select>
       </div>
@@ -236,7 +235,6 @@ async function load(p=1){
   document.getElementById('rows').innerHTML = data.data.map(g => `
     <tr class="border-t border-slate-100">
       <td class="p-3 font-medium">${g.name}</td>
-      <td class="p-3 text-slate-600">${g.category?.name ?? '-'}</td>
       <td class="p-3 text-slate-600">${g.region ?? '-'}</td>
       <td class="p-3">${badge(g.status)}</td>
       <td class="p-3">
