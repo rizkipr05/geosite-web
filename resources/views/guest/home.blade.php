@@ -10,7 +10,7 @@
     {{-- background layers --}}
     <div class="absolute inset-0">
       <img
-        src="https://picsum.photos/seed/geo/1920/1080"
+        src="{{ asset('storage/asset/images (1).jpeg') }}"
         class="w-full h-full object-cover opacity-35"
         onerror="this.style.display='none'"
         alt="Hero background"

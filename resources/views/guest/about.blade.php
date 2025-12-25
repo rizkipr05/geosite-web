@@ -7,11 +7,12 @@
   {{-- HERO --}}
   <section class="relative overflow-hidden rounded-[2.5rem] border border-slate-200 bg-white">
     <div class="absolute inset-0">
-      <div class="absolute -top-24 -left-24 w-[520px] h-[520px] rounded-full blur-3xl bg-blue-600/10"></div>
-      <div class="absolute -bottom-28 -right-28 w-[620px] h-[620px] rounded-full blur-3xl bg-emerald-500/10"></div>
-      <div class="absolute inset-0 opacity-[0.06]"
-           style="background-image: radial-gradient(circle at 1px 1px, #0f172a 1px, transparent 0); background-size: 22px 22px;">
-      </div>
+      <img
+        src="{{ asset('storage/geosites/70/b6Ma1GHLb21emy2yMmcEKoDr6zv6gDHmjL8gJrI8.jpg') }}"
+        class="w-full h-full object-cover opacity-100"
+        alt="About background"
+      >
+      <div class="absolute inset-0 bg-gradient-to-b from-white/30 to-white/90"></div>
     </div>
 
     <div class="relative p-8 md:p-12">
