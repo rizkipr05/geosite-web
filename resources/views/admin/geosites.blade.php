@@ -270,9 +270,33 @@ async function toggleStatus(id){
 }
 
 async function del(id){
-  if(!confirm('Hapus geosite ini?')) return;
-  await api('/api/admin/geosites/'+id, {method:'DELETE'});
-  load(page);
+  const result = await Confirm.fire({
+    title: 'Hapus geosite ini?',
+    text: "Data yang dihapus tidak dapat dikembalikan!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Ya, Hapus!',
+    cancelButtonText: 'Batal'
+  });
+
+  if (!result.isConfirmed) return;
+
+  try {
+    await api('/api/admin/geosites/'+id, {method:'DELETE'});
+    await Confirm.fire({
+       icon: 'success', 
+       title: 'Berhasil!', 
+       text: 'Geosite berhasil dihapus.',
+       confirmButtonClass: 'px-4 py-2 rounded-lg bg-slate-900 text-white hover:bg-slate-800'
+    });
+    load(page);
+  } catch(e) {
+     Confirm.fire({
+       icon: 'error',
+       title: 'Gagal!', 
+       text: 'Terjadi kesalahan saat menghapus.'
+     });
+  }
 }
 
 document.getElementById('form').addEventListener('submit', async (e)=>{

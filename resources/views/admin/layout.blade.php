@@ -7,6 +7,7 @@
 
   {{-- Tailwind CDN (cepat, cocok untuk admin panel) --}}
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body class="bg-slate-50 text-slate-800">
 
@@ -230,6 +231,24 @@
   }
 
   loadAdminMe();
+  
+  // Custom SweetAlert Mixin
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+  });
+
+  const Confirm = Swal.mixin({
+    customClass: {
+      confirmButton: 'px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 font-medium ml-2',
+      cancelButton: 'px-4 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 font-medium',
+      popup: 'rounded-2xl border border-slate-100 shadow-xl'
+    },
+    buttonsStyling: false
+  });
 </script>
 
 @stack('scripts')

@@ -117,9 +117,33 @@ async function load(){
 }
 
 async function del(id){
-  if(!confirm('Hapus kategori ini?')) return;
-  await api('/api/admin/categories/'+id, {method:'DELETE'});
-  load();
+  const result = await Confirm.fire({
+    title: 'Hapus kategori ini?',
+    text: "Data yang dihapus tidak dapat dikembalikan!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Ya, Hapus!',
+    cancelButtonText: 'Batal'
+  });
+
+  if (!result.isConfirmed) return;
+
+  try {
+    await api('/api/admin/categories/'+id, {method:'DELETE'});
+    await Confirm.fire({
+       icon: 'success', 
+       title: 'Berhasil!', 
+       text: 'Kategori berhasil dihapus.',
+       confirmButtonClass: 'px-4 py-2 rounded-lg bg-slate-900 text-white hover:bg-slate-800'
+    });
+    load();
+  } catch(e) {
+    Confirm.fire({
+      icon: 'error',
+      title: 'Gagal!',
+      text: 'Terjadi kesalahan saat menghapus.'
+    });
+  }
 }
 
 document.getElementById('q').addEventListener('input', render);
