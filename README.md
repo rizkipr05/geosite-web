@@ -33,6 +33,10 @@ Platform ini tidak hanya menyediakan informasi statis, tetapi juga dilengkapi de
 Aplikasi ini dibangun menggunakan teknologi web modern untuk memastikan performa, keamanan, dan kemudahan pengembangan.
 
 ### Backend
+![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white)
+
 - **Framework**: [Laravel](https://laravel.com) (PHP Framework)
   - Arsitektur MVC yang kokoh.
   - Eloquent ORM untuk manajemen database.
@@ -40,6 +44,10 @@ Aplikasi ini dibangun menggunakan teknologi web modern untuk memastikan performa
 - **Database**: MySQL
 
 ### Frontend
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Alpine.js](https://img.shields.io/badge/Alpine.js-FD4287?style=for-the-badge&logo=alpine.js&logoColor=white)
+![Leaflet](https://img.shields.io/badge/Leaflet-199900?style=for-the-badge&logo=Leaflet&logoColor=white)
+
 - **Templating**: Blade Template Engine
 - **Styling**: [Tailwind CSS](https://tailwindcss.com) (Utility-first CSS framework via CDN/Build)
 - **Icons**: Heroicons (Inline SVG)
@@ -47,6 +55,10 @@ Aplikasi ini dibangun menggunakan teknologi web modern untuk memastikan performa
 - **Data Source**: OpenStreetMap (via Overpass API) & Wikidata API
 
 ### External Services & APIs
+![OpenStreetMap](https://img.shields.io/badge/OpenStreetMap-7EBC6F?style=for-the-badge&logo=OpenStreetMap&logoColor=white)
+![Overpass API](https://img.shields.io/badge/Overpass_API-7EBC6F?style=for-the-badge&logo=openstreetmap&logoColor=white)
+![Wikidata](https://img.shields.io/badge/Wikidata-006699?style=for-the-badge&logo=wikidata&logoColor=white)
+
 - **Overpass API**: Digunakan untuk mengambil data geospasial (titik koordinat, nama, metadata) dari OpenStreetMap.
 - **Wikidata API**: Digunakan untuk mengambil gambar dan metadata tambahan yang terhubung dengan entitas OSM.
 
