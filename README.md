@@ -135,6 +135,34 @@ Ikuti langkah-langkah berikut untuk menjalankan proyek di komputer lokal Anda:
 
 ---
 
+---
+
+## 🧪 Testing & Debugging
+
+### 1. Test Koneksi Overpass OSM
+Gunakan command CLI berikut untuk menguji apakah koneksi ke Overpass API berjalan lancar dan data bisa diambil:
+
+```bash
+php artisan osm:test {type} {id}
+```
+
+**Contoh:**
+```bash
+# Menari data relasi (misal batas wilayah Kab. Probolinggo)
+php artisan osm:test relation 9674162
+
+# Mencari data node spesifik
+php artisan osm:test node 12345678
+```
+
+### 2. Monitoring Log
+Jika terjadi error saat import atau API request, cek log aplikasi di:
+```bash
+tail -f storage/logs/laravel.log
+```
+
+---
+
 ## 📝 Lisensi
 
 Proyek ini adalah perangkat lunak open-source di bawah lisensi [MIT](https://opensource.org/licenses/MIT).
