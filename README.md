@@ -117,19 +117,32 @@ Ikuti langkah-langkah berikut untuk menjalankan proyek di komputer lokal Anda:
    ```
    Atur DB_DATABASE, DB_USERNAME, dan DB_PASSWORD di file `.env`.
 
-4. **Generate Key & Migrasi Database**
+4. **Generate Key & Setup Storage**
    ```bash
    php artisan key:generate
+   php artisan storage:link
+   ```
+
+5. **Setup Database**
+
+   **Opsi A: Instalasi Baru (Database Kosong)**
+   Jika database Anda masih kosong, jalankan migrasi dan seeder untuk membuat tabel dan data awal:
+   ```bash
    php artisan migrate --seed
    ```
-   *Note: Gunakan seed untuk membuat akun admin default.*
 
-5. **Jalankan Server**
+   **Opsi B: Lanjutkan Project (Database Sudah Ada)**
+   Jika Anda clone project dan sudah import database ke phpMyAdmin:
+   1. Pastikan konfigurasi `.env` sesuai dengan database Anda.
+   2. **Lewati** perintah `php artisan migrate`.
+   3. Langsung jalankan server.
+
+6. **Jalankan Server**
    ```bash
    php artisan serve
    ```
 
-6. **Akses Aplikasi**
+7. **Akses Aplikasi**
    - Halaman Tamu: `http://127.0.0.1:8000`
    - Login Admin: `http://127.0.0.1:8000/admin/login`
 
